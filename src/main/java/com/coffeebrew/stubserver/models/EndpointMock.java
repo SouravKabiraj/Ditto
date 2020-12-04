@@ -19,6 +19,13 @@ public class EndpointMock {
     String body;
     String status;
 
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getId() {
+        return id;
+    }
+
     public void setMethod(HttpMethod method) {
         this.method = method;
     }

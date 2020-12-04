@@ -20,4 +20,8 @@ public class EndpointService {
     public List<EndpointMock> getAll() {
         return (List<EndpointMock>) endpointRepository.findAll();
     }
+
+    public void remove(String id) {
+        endpointRepository.deleteById(id);
+    }
 }
