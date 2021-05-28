@@ -12,6 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(path = "/endpoints")
+@CrossOrigin(origins = "*")
 public class EndpointController {
 
     @Autowired

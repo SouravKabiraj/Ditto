@@ -14,10 +14,10 @@ public class MockEndpointService {
     @Autowired
     EndpointRepository repository;
 
-    public Optional<EndpointMock> getResponseByUrl(String uri, HttpMethod method) {
+    public Optional<EndpointMock> getResponseByUrl(String uri, String query, HttpMethod method) {
         List<EndpointMock> endpoints = repository.findByUrl(uri);
         for (EndpointMock endpoint : endpoints) {
-            if (endpoint.getMethod().equals(method)) {
+            if (endpoint.equals(new EndpointMock(method, uri, query))) {
                 return Optional.of(endpoint);
             }
         }

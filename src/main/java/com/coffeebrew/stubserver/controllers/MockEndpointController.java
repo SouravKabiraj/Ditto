@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/**/{path:[^\\.]*}")
+@CrossOrigin(origins = "*")
 public class MockEndpointController {
 
     @Autowired
@@ -23,18 +24,25 @@ public class MockEndpointController {
     @GetMapping()
     public ResponseEntity<Object> get(HttpServletRequest httpServletRequest) {
         Gson gson = new Gson();
-        String uri = httpServletRequest.getRequestURI();
-        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, HttpMethod.GET);
+        String url = httpServletRequest.getRequestURI();
+        String query = httpServletRequest.getQueryString();
+        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(url, query, HttpMethod.GET);
         return endpointMock
-                .map(mock -> new ResponseEntity<>(gson.fromJson(mock.getBody(), Object.class), HttpStatus.valueOf(mock.getStatus())))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+                .map(
+                        mock -> new ResponseEntity<>(
+                                gson.fromJson(mock.getBody(), Object.class),
+                                HttpStatus.valueOf(mock.getStatus())))
+                .orElseGet(
+                        () -> new ResponseEntity<>(
+                                null, HttpStatus.NOT_FOUND));
     }
 
     @PutMapping()
     public ResponseEntity<Object> put(HttpServletRequest httpServletRequest) {
         Gson gson = new Gson();
         String uri = httpServletRequest.getRequestURI();
-        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, HttpMethod.PUT);
+        String query = httpServletRequest.getQueryString();
+        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, query, HttpMethod.PUT);
         return endpointMock
                 .map(mock -> new ResponseEntity<>(gson.fromJson(mock.getBody(), Object.class), HttpStatus.valueOf(mock.getStatus())))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
@@ -45,7 +53,8 @@ public class MockEndpointController {
     public ResponseEntity<Object> post(HttpServletRequest httpServletRequest) {
         Gson gson = new Gson();
         String uri = httpServletRequest.getRequestURI();
-        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, HttpMethod.POST);
+        String query = httpServletRequest.getQueryString();
+        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, query, HttpMethod.POST);
         return endpointMock
                 .map(mock -> new ResponseEntity<>(gson.fromJson(mock.getBody(), Object.class), HttpStatus.valueOf(mock.getStatus())))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
@@ -56,7 +65,8 @@ public class MockEndpointController {
     public ResponseEntity<Object> delete(HttpServletRequest httpServletRequest) {
         Gson gson = new Gson();
         String uri = httpServletRequest.getRequestURI();
-        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, HttpMethod.DELETE);
+        String query = httpServletRequest.getQueryString();
+        Optional<EndpointMock> endpointMock = mockEndpointService.getResponseByUrl(uri, query, HttpMethod.DELETE);
         return endpointMock
                 .map(mock -> new ResponseEntity<>(gson.fromJson(mock.getBody(), Object.class), HttpStatus.valueOf(mock.getStatus())))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
